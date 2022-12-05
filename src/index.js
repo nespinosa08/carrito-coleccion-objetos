@@ -31,6 +31,8 @@ carritoBody.addEventListener('click', (e)=>{
     //console.log(carrito[e.target.getAttribute('data-id')].producto.cant)
     //console.log(carrito);
 
+    localStorage.setItem('objetoCarrito', JSON.stringify(carrito));
+
     pintarCarritoBody(carrito);
     e.stopPropagation();
 
@@ -44,16 +46,18 @@ let carrito={};
 
 document.addEventListener('DOMContentLoaded', ()=>{
     fetchData();
+    if(localStorage.getItem('objetoCarrito')){
+        carrito = JSON.parse(localStorage.getItem('objetoCarrito'));
+        pintarCarritoBody(carrito);
+    }
+    pintarFooter();
     
 })
 
 fichas.addEventListener('click', (e)=>{
     //console.log(e.target);
-    addToCar(e);
-
-    
+    addToCar(e);   
 })
-
 
 //const apiUrl = 'https://pokeapi.co/api/v2/pokemon/ditto';
 //const apiUrl = 'https://api.chucknorris.io/jokes/random';
@@ -113,18 +117,13 @@ if (e.target.classList.contains('btn')){
         carrito[producto.id].producto.cant++
         //console.log(carrito[producto.id].producto.cant);
     }
-    
-  
+    localStorage.setItem('objetoCarrito', JSON.stringify(carrito));
 
    //console.log(carrito);
-
 }
 e.stopPropagation();
 pintarCarritoBody(carrito);
 }
-
-
-
 
 const pintarCarritoBody = (carrito)=>{
     //console.log(carrito);
@@ -142,20 +141,9 @@ const pintarCarritoBody = (carrito)=>{
         fragment.append(clone);
 
     })
-/*     for (let i in carrito){
-        
-        templateCarrito.querySelector('.id').textContent = carrito[i].producto.id;
-        templateCarrito.querySelector('.name').textContent = carrito[i].producto.name;
-        templateCarrito.querySelector('.cant').textContent = carrito[i].producto.cant;
-        templateCarrito.querySelector('.salary').textContent = carrito[i].producto.salary;
-        templateCarrito.querySelector('span').textContent = carrito[i].producto.cant * carrito[i].producto.salary;
-       
-        const clone = templateCarrito.cloneNode(true);
-        fragment.append(clone);
-    } */
+
     carritoBody.append(fragment);
     pintarFooter();
-    
 }
 //pintarCarritoBody();
 
@@ -184,26 +172,10 @@ const pintarFooter = ()=>{
         const btnVaciar = document.getElementById('vaciar-carrito');
         btnVaciar.addEventListener('click', ()=>{
             carrito = {};
+            localStorage.setItem('objetoCarrito', JSON.stringify(carrito));
+
             pintarFooter();
-            pintarCarritoBody();
-    })
+            pintarCarritoBody(carrito);
+        })
+    }
 }
-        
-        
-        //console.log(conta);
-        //console.log(total);
-        
-        /* const cantProd = Object.values(carrito[i]).reduce((acc, {cant})=>{
-            return acc = acc + cant
-        }, 0);
-        console.log(cantProd); */
-    //console.log(carrito[2].producto.cant);
-
-/*     const kjhadg = Object.values(carrito).forEach((a)=>{
-console.log(a.producto.cant);
-    }) */
-    
-
-}
-
-pintarFooter();
